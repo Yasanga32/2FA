@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 export const Login = () => {
 
   const navigate = useNavigate();
-  const { backendUrl, setIsLoggedin ,getUserData } = useContext(AppContent);
+  const { backendUrl, setIsLoggedin, getUserData } = useContext(AppContent);
 
   const [state, setState] = useState('Sign Up');
   const [name, setName] = useState('');
@@ -27,36 +27,36 @@ export const Login = () => {
       return;
     }
 
-    
+
 
     try {
-    axios.defaults.withCredentials = true;
+      axios.defaults.withCredentials = true;
 
-    if (state === "Sign Up") {
-      const {data} = await axios.post(backendUrl + '/api/auth/register'
-        ,{name,email,password})
+      if (state === "Sign Up") {
+        const { data } = await axios.post(backendUrl + '/api/auth/register'
+          , { name, email, password })
 
-        if(data.success){
-            setIsLoggedin(true)
-            getUserData()
-            navigate('/')
-        }else{
-            toast.error(data.message)
+        if (data.success) {
+          setIsLoggedin(true)
+          getUserData()
+          navigate('/')
+        } else {
+          toast.error(data.message)
         }
 
-    } else {
-      const {data} = await axios.post(backendUrl + '/api/auth/login',
-        {email,password})
+      } else {
+        const { data } = await axios.post(backendUrl + '/api/auth/login',
+          { email, password })
 
-        if(data.success){
-            setIsLoggedin(true)
-            getUserData()
-            navigate('/')
-        }else{
-            toast.error(data.message)
+        if (data.success) {
+          setIsLoggedin(true)
+          getUserData()
+          navigate('/')
+        } else {
+          toast.error(data.message)
         }
 
-    }
+      }
 
 
 
