@@ -1,0 +1,204 @@
+﻿
+> server@1.0.0 test
+> cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --forceExit
+
+node.exe : (node:30328) 
+ExperimentalWarning: VM Modules is an 
+experimental feature and might change 
+at any time
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpeci 
+   fied: ((node:30328) Ex...nge at an  
+  y time:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCo 
+   mmandError
+ 
+(Use `node --trace-warnings ...` to 
+show where the warning was created)
+FAIL tests/auth.test.js
+  ΓùÅ Auth API Endpoints ΓÇ║ POST 
+/api/auth/send-verify-otp ΓÇ║ should 
+send verify OTP successfully
+
+    expect(received).toBe(expected) // 
+Object.is equality
+
+    Expected: true
+    Received: false
+
+    [0m [90m 167 |[39m
+     [90m 168 |[39m             expec
+t(res[33m.[39mstatusCode)[33m.[39mt
+oBe([35m200[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 169 
+|[39m             expect(res[33m.[39
+mbody[33m.[39msuccess)[33m.[39mtoBe
+([36mtrue[39m)[33m;[39m
+     [90m     |[39m                  
+                    
+[31m[1m^[22m[39m
+     [90m 170 |[39m             expec
+t(res[33m.[39mbody[33m.[39mmessage)
+[33m.[39mtoBe([32m'Verification OTP 
+sent to your email'[39m)[33m;[39m
+     [90m 171 |[39m             expec
+t(mockSave)[33m.[39mtoHaveBeenCalledT
+imes([35m1[39m)[33m;[39m
+     [90m 172 |[39m         
+})[33m;[39m[0m
+
+      at Object.<anonymous> 
+(tests/auth.test.js:169:38)
+
+  ΓùÅ Auth API Endpoints ΓÇ║ POST 
+/api/auth/send-verify-otp ΓÇ║ should 
+return error if account is already 
+verified
+
+    expect(received).toBe(expected) // 
+Object.is equality
+
+    Expected: "Account is already 
+verified"
+    Received: "Not Authorized.Login 
+Again"
+
+    [0m [90m 187 |[39m             e
+xpect(res[33m.[39mstatusCode)[33m.[
+39mtoBe([35m200[39m)[33m;[39m
+     [90m 188 |[39m             expec
+t(res[33m.[39mbody[33m.[39msuccess)
+[33m.[39mtoBe([36mfalse[39m)[33m;
+[39m
+    [31m[1m>[22m[39m[90m 189 
+|[39m             expect(res[33m.[39
+mbody[33m.[39mmessage)[33m.[39mtoBe
+([32m'Account is already 
+verified'[39m)[33m;[39m
+     [90m     |[39m                  
+                    
+[31m[1m^[22m[39m
+     [90m 190 |[39m         
+})[33m;[39m
+     [90m 191 |[39m     })[33m;[39m
+     [90m 192 |[39m[0m
+
+      at Object.<anonymous> 
+(tests/auth.test.js:189:38)
+
+  ΓùÅ Auth API Endpoints ΓÇ║ POST 
+/api/auth/verify-account ΓÇ║ should 
+verify account successfully
+
+    expect(received).toBe(expected) // 
+Object.is equality
+
+    Expected: true
+    Received: false
+
+    [0m [90m 210 |[39m
+     [90m 211 |[39m             expec
+t(res[33m.[39mstatusCode)[33m.[39mt
+oBe([35m200[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 212 
+|[39m             expect(res[33m.[39
+mbody[33m.[39msuccess)[33m.[39mtoBe
+([36mtrue[39m)[33m;[39m
+     [90m     |[39m                  
+                    
+[31m[1m^[22m[39m
+     [90m 213 |[39m             expec
+t(res[33m.[39mbody[33m.[39mmessage)
+[33m.[39mtoBe([32m'Email verified 
+successfully'[39m)[33m;[39m
+     [90m 214 |[39m             expec
+t(mockSave)[33m.[39mtoHaveBeenCalledT
+imes([35m1[39m)[33m;[39m
+     [90m 215 |[39m         
+})[33m;[39m[0m
+
+      at Object.<anonymous> 
+(tests/auth.test.js:212:38)
+
+  ΓùÅ Auth API Endpoints ΓÇ║ POST 
+/api/auth/verify-account ΓÇ║ should 
+fail verify account if OTP is expired
+
+    expect(received).toBe(expected) // 
+Object.is equality
+
+    Expected: "OTP Expired"
+    Received: "Not Authorized.Login 
+Again"
+
+    [0m [90m 232 |[39m             e
+xpect(res[33m.[39mstatusCode)[33m.[
+39mtoBe([35m200[39m)[33m;[39m
+     [90m 233 |[39m             expec
+t(res[33m.[39mbody[33m.[39msuccess)
+[33m.[39mtoBe([36mfalse[39m)[33m;
+[39m
+    [31m[1m>[22m[39m[90m 234 
+|[39m             expect(res[33m.[39
+mbody[33m.[39mmessage)[33m.[39mtoBe
+([32m'OTP Expired'[39m)[33m;[39m
+     [90m     |[39m                  
+                    
+[31m[1m^[22m[39m
+     [90m 235 |[39m         
+})[33m;[39m
+     [90m 236 |[39m
+     [90m 237 |[39m         
+it([32m'should fail verify account if 
+OTP is invalid'[39m[33m,[39m 
+[36masync[39m () [33m=>[39m {[0m
+
+      at Object.<anonymous> 
+(tests/auth.test.js:234:38)
+
+  ΓùÅ Auth API Endpoints ΓÇ║ POST 
+/api/auth/verify-account ΓÇ║ should 
+fail verify account if OTP is invalid
+
+    expect(received).toBe(expected) // 
+Object.is equality
+
+    Expected: "Invalid OTP"
+    Received: "Not Authorized.Login 
+Again"
+
+    [0m [90m 252 |[39m             e
+xpect(res[33m.[39mstatusCode)[33m.[
+39mtoBe([35m200[39m)[33m;[39m
+     [90m 253 |[39m             expec
+t(res[33m.[39mbody[33m.[39msuccess)
+[33m.[39mtoBe([36mfalse[39m)[33m;
+[39m
+    [31m[1m>[22m[39m[90m 254 
+|[39m             expect(res[33m.[39
+mbody[33m.[39mmessage)[33m.[39mtoBe
+([32m'Invalid OTP'[39m)[33m;[39m
+     [90m     |[39m                  
+                    
+[31m[1m^[22m[39m
+     [90m 255 |[39m         
+})[33m;[39m
+     [90m 256 |[39m     })[33m;[39m
+     [90m 257 |[39m[0m
+
+      at Object.<anonymous> 
+(tests/auth.test.js:254:38)
+
+PASS tests/user.test.js
+
+Test Suites: 1 failed, 1 passed, 2 
+total
+Tests:       5 failed, 13 passed, 18 
+total
+Snapshots:   0 total
+Time:        1.029 s
+Ran all test suites.
