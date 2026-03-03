@@ -19,7 +19,7 @@ describe('Auth API Endpoints', () => {
             jest.spyOn(userModel, 'findOne').mockResolvedValue(null);
             jest.spyOn(bcrypt, 'hash').mockResolvedValue('hashedPassword123');
 
-            // Mock userModel instance behavior
+            //mock userModel instance behavior
             jest.spyOn(userModel.prototype, 'save').mockResolvedValue(true);
 
             jest.spyOn(jwt, 'sign').mockReturnValue('mockJwtToken');
