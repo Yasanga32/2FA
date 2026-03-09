@@ -5,7 +5,7 @@ const userAuth = async (req,res,next)=>{
 
 
     if(!token){
-        return res.json({success:false,message:"Not Authorized.Login Again"})
+        return res.json({success:false,message:"Not Authorized.Login Again"});
     }
 
 
@@ -15,9 +15,9 @@ const userAuth = async (req,res,next)=>{
 
         if(tokenDecode.id){
             req.body = req.body || {}; 
-            req.body.userId = tokenDecode.id
+            req.body.userId = tokenDecode.id;
         }else{
-            return res.json({success:false,message:'Not Authorized.Login Again'})
+            return res.json({success:false,message:'Not Authorized.Login Again'});
         }
 
         next();
@@ -26,6 +26,6 @@ const userAuth = async (req,res,next)=>{
         res.json({success:false,message:error.message});
     }
 
-}
+};
 
 export default userAuth;

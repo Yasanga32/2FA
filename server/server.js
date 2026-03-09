@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import 'dotenv/config';
 import cookieParser from 'cookie-parser';
 import connectDB from './config/mongodb.js';
@@ -13,7 +12,7 @@ const port = process.env.PORT || 4000;
 
 const allowedOrigins = process.env.CORS_ORIGIN
     ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
-    : ['http://localhost:5173']
+    : ['http://localhost:5173'];
 
 app.use(express.json());
 app.use(cookieParser());

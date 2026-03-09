@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import userModel from '../models/userModel.js';
 import transporter from '../config/nodemailer.js';
-import { EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE } from '../config/emailTemplates.js';
+import { EMAIL_VERIFY_TEMPLATE } from '../config/emailTemplates.js';
 
 export const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -59,7 +59,7 @@ export const register = async (req, res) => {
 
 
 
-}
+};
 
 // Login controller
 export const login = async (req, res) => {
@@ -100,7 +100,7 @@ export const login = async (req, res) => {
     }
 
 
-}
+};
 
 
 // Logout controller
@@ -115,9 +115,9 @@ export const logout = (req, res) => {
         });
         return res.json({ success: true, message: "Logout successful" });
     } catch (error) {
-
+        // No error handling needed here
     }
-}
+};
 
 
 export const sendVerifyOtp = async (req, res) => {
@@ -147,7 +147,7 @@ export const sendVerifyOtp = async (req, res) => {
             html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}",
                 user.email
             )
-        }
+        };
 
         await transporter.sendMail(mailOptions);
 
@@ -159,7 +159,7 @@ export const sendVerifyOtp = async (req, res) => {
     }
 
 
-}
+};
 
 
 export const verifyEmail = async (req, res) => {
@@ -203,7 +203,7 @@ export const verifyEmail = async (req, res) => {
     } catch (error) {
         res.json({ success: false, message: error.message });
     }
-}
+};
 
 
 //Check if user is authenticated
@@ -216,7 +216,7 @@ export const isAuthenticated = async (req, res) => {
     } catch (error) {
         res.json({ success: false, message: error.message });
     }
-}
+};
 
 //Send Password Reset OTP
 export const sendResetOtp = async (req, res) => {
@@ -267,7 +267,7 @@ export const sendResetOtp = async (req, res) => {
         return res.json({ success: false, message: error.message });
     }
 
-}
+};
 
 
 //Reset User Password
@@ -309,4 +309,4 @@ export const resetPassword = async (req, res) => {
         return res.json({ success: false, error: error.message });
     }
 
-}
+};
