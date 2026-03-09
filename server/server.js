@@ -9,7 +9,7 @@ import logger from './config/logger.js';
 
 const app = express();
 const port = process.env.PORT || 4000;
-const shanuka = "my name";
+
 
 const allowedOrigins = process.env.CORS_ORIGIN
     ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
