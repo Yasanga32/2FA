@@ -115,7 +115,8 @@ export const logout = (req, res) => {
         });
         return res.json({ success: true, message: "Logout successful" });
     } catch (error) {
-        // No error handling needed here
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
     }
 };
 
