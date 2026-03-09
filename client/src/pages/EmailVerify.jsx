@@ -7,65 +7,63 @@ import { toast } from 'react-toastify'
 
 export const EmailVerify = () => {
 
-  axios.defaults.withCredentials = true;
-
-  const {backendUrl,isLoggedin,userData,getUserData} = useContext(AppContent)
+  const { backendUrl, isLoggedin, userData, getUserData } = useContext(AppContent)
   const inputRefs = React.useRef([])
   const navigate = useNavigate()
 
-  const handleInput = (e,index)=>{
-    if(e.target.value.length > 0 && index < inputRefs.current.length - 1){
-      inputRefs.current[index+1].focus()
+  const handleInput = (e, index) => {
+    if (e.target.value.length > 0 && index < inputRefs.current.length - 1) {
+      inputRefs.current[index + 1].focus()
     }
   }
 
-  const handleKeyDown= (e,index)=>{
-    if(e.key === 'Backspace' && e.target.value === '' && index > 0){
-      inputRefs.current[index-1].focus()
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+      inputRefs.current[index - 1].focus()
     }
   }
 
-  const handlePaste= (e)=>{
+  const handlePaste = (e) => {
     const paste = e.clipboardData.getData('text')
     const pasteArray = paste.split('');
-    pasteArray.forEach((char,index)=>{
-      if(inputRefs.current[index]){
+    pasteArray.forEach((char, index) => {
+      if (inputRefs.current[index]) {
         inputRefs.current[index].value = char;
       }
     })
   }
 
   const onSubmitHandler = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const otpArray = inputRefs.current.map(input => input.value)
-    const otp = otpArray.join('')
+    try {
+      const otpArray = inputRefs.current.map(input => input.value)
+      const otp = otpArray.join('')
 
-    const { data } = await axios.post(
-      backendUrl + '/api/auth/verify-account',
-      { 
-        
-        otp
-       }
-    )
+      const { data } = await axios.post(
+        backendUrl + '/api/auth/verify-account',
+        {
 
-    if (data.success) {
-      toast.success(data.message)
-      getUserData()
-      navigate('/')
-    } else {
-      toast.error(data.message)
+          otp
+        }
+      )
+
+      if (data.success) {
+        toast.success(data.message)
+        getUserData()
+        navigate('/')
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message)
     }
-  } catch (error) {
-    toast.error(error.response?.data?.message || error.message)
   }
-}
 
 
-  useEffect(()=>{
+  useEffect(() => {
     isLoggedin && userData && userData.isAccountVerified && navigate('/')
-  },[isLoggedin,userData])
+  }, [isLoggedin, userData, navigate])
 
 
   return (
@@ -86,7 +84,7 @@ export const EmailVerify = () => {
 
         <p className="text-center mb-6 text-indigo-300">
           Enter the 6-digit code sent to your email id.
-        </p> 
+        </p>
 
         <div className="flex justify-between mb-8" onPaste={handlePaste}>
           {Array(6).fill(0).map((_, index) => (
@@ -99,7 +97,7 @@ export const EmailVerify = () => {
               text-xl rounded-md text-center"
               ref={(e) => inputRefs.current[index] = e}
               onInput={(e) => handleInput(e, index)}
-              onKeyDown={(e)=>handleKeyDown(e,index)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
             />
           ))}
         </div>

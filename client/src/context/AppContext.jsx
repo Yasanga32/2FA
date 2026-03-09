@@ -1,34 +1,17 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { AppContent } from "./AppContent";
 
-
-
-export const AppContent = createContext()
+axios.defaults.withCredentials = true;
 
 export const AppContextProvider = ({ children }) => {
-
-    axios.defaults.withCredentials = true;
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [isLoggedin, setIsLoggedin] = useState(false)
     const [userData, setUserData] = useState(null)
 
-    const getAuthState = async () => {
-        try {
-            const { data } = await axios.get(backendUrl + '/api/auth/is-auth')
-
-            if (data.success) {
-                setIsLoggedin(true)
-                getUserData()
-            }
-
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
-
-    const getUserData = async () => {
+    const getUserData = useCallback(async () => {
         try {
             const { data } = await axios.get(backendUrl + '/api/user/data')
             data.success ? setUserData(data.userData) : toast.error(data.message)
@@ -36,11 +19,25 @@ export const AppContextProvider = ({ children }) => {
         } catch (error) {
             console.log(error.message)
         }
-    }
+    }, [backendUrl])
+
 
     useEffect(() => {
+        const getAuthState = async () => {
+            try {
+                const { data } = await axios.get(backendUrl + '/api/auth/is-auth')
+
+                if (data.success) {
+                    setIsLoggedin(true)
+                    getUserData()
+                }
+
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
         getAuthState();
-    }, [])
+    }, [backendUrl, getUserData])
 
     const value = {
         backendUrl,

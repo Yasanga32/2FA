@@ -8,13 +8,10 @@ import axios from 'axios';
 export default function Navbar() {
 
   const navigate = useNavigate()
-  const { userData, backendUrl, setUserData, setIsLoggedin } = useContext
-    (AppContent)
+  const { userData, backendUrl, setUserData, setIsLoggedin } = useContext(AppContent)
 
   const sendVerificationOtp = async () => {
     try {
-      axios.defaults.withCredentials = true;
-
       const { data } = await axios.post(backendUrl + '/api/auth/send-verify-otp')
 
       if (data.success) {
@@ -33,7 +30,6 @@ export default function Navbar() {
 
   const logout = async () => {
     try {
-      axios.defaults.withCredentials = true
       const { data } = await axios.post(backendUrl + '/api/auth/logout')
       data.success && setIsLoggedin(false)
       data.success && setUserData(false)
