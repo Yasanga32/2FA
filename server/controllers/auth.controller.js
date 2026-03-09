@@ -44,7 +44,7 @@ export const register = async (req, res) => {
             to: email,
             subject: 'Welcome to Lanka Auth',
             text: `Hello ${name},\n\nWelcome to Lanka Auth! We're glad to have you on board. Your account has been created successfully.\n\nBest regards,\nLanka Auth Team`
-        }
+        };
 
         await transporter.sendMail(mailOptions);
 

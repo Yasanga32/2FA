@@ -7,7 +7,10 @@
     "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --forceExit",
     "test:mocha": "cross-env NODE_ENV=test mocha tests-mocha/*.test.js",
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "lint": "eslint . --ext .js,.jsx",
+    "lint:fix": "eslint . --ext .js,.jsx --fix",
+    "format": "prettier --write ."
   },
   "author": "",
   "license": "ISC",
@@ -15,9 +18,11 @@
   "devDependencies": {
     "chai": "^6.2.2",
     "cross-env": "^10.1.0",
+    "eslint": "^10.0.3",
     "jest": "^30.2.0",
     "mocha": "^11.7.5",
     "nodemon": "^3.1.14",
+    "prettier": "^3.8.1",
     "sinon": "^21.0.1",
     "supertest": "^7.2.2"
   },
