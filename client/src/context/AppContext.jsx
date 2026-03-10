@@ -1,7 +1,8 @@
-import { useEffect, useState, useCallback } from "react";
+import { createContext, useEffect, useState, useCallback } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { AppContent } from "./AppContent";
+
+export const AppContent = createContext();
 
 axios.defaults.withCredentials = true;
 

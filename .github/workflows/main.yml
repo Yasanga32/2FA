@@ -34,3 +34,9 @@ jobs:
       - name: Lint frontend
         working-directory: client
         run: npm run lint -- --max-warnings=0
+
+      - name: Build backend Docker image
+        run: docker build -t backend ./server
+
+      - name: Build frontend Docker image
+        run: docker build -t frontend ./client
