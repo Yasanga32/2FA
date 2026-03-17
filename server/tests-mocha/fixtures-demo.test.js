@@ -7,7 +7,8 @@ import transporter from '../config/nodemailer.js';
 
 describe('Mocha Fixtures & Sinon Mocking Demo', () => {
 
-    // Fixtures (Setup/Teardown)
+    //test 1
+    // Fixtures (Setup/Teardown) //
     beforeEach(() => {
         // These stubs prevent actual database, bcrypt, and email calls
         sinon.stub(userModel, 'findOne');
