@@ -15,7 +15,17 @@ const allowedOrigins = process.env.CORS_ORIGIN
     ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
     : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'];
 
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            console.error(`❌ CORS BLOCKED: Origin "${origin}" not in allowed list:`, allowedOrigins);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
 
 // Request Logger for debugging Render hits
 app.use((req, res, next) => {
