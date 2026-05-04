@@ -13,11 +13,18 @@ const port = process.env.PORT || 4000;
 
 const allowedOrigins = process.env.CORS_ORIGIN
     ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
-    : ['http://localhost:5173'];
+    : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'];
+
+app.use(cors({ origin: allowedOrigins, credentials: true }));
+
+// Request Logger for debugging Render hits
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url} - Origin: ${req.headers.origin}`);
+    next();
+});
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 
 //API Endpoints
