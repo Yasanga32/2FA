@@ -46,14 +46,19 @@ export const register = async (req, res) => {
             text: `Hello ${name},\n\nWelcome to Lanka Auth! We're glad to have you on board. Your account has been created successfully.\n\nBest regards,\nLanka Auth Team`
         };
 
-        await transporter.sendMail(mailOptions);
+        try {
+            await transporter.sendMail(mailOptions);
+        } catch (emailError) {
+            console.error("❌ Failed to send welcome email:", emailError.message);
+            // We don't return here because the user is already saved in the DB
+        }
 
         return res.json({ success: true, message: "User registered successfully" });
 
 
 
     } catch (error) {
-        res.json({ success: false, message: error.message });
+        return res.json({ success: false, message: error.message });
     }
 
 

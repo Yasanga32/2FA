@@ -14,6 +14,7 @@ export const Login = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -30,15 +31,19 @@ export const Login = () => {
 
 
     try {
+      setLoading(true);
       axios.defaults.withCredentials = true;
 
       if (state === "Sign Up") {
         const { data } = await axios.post(backendUrl + '/api/auth/register'
           , { name, email, password })
 
+        console.log('DEBUG → Signup Response:', data);
+
         if (data.success) {
           setIsLoggedin(true)
           getUserData()
+          toast.success(data.message || 'Registration successful!');
           navigate('/')
         } else {
           toast.error(data.message)
@@ -48,9 +53,12 @@ export const Login = () => {
         const { data } = await axios.post(backendUrl + '/api/auth/login',
           { email, password })
 
+        console.log('DEBUG → Login Response:', data);
+
         if (data.success) {
           setIsLoggedin(true)
           getUserData()
+          toast.success(data.message || 'Login successful!');
           navigate('/')
         } else {
           toast.error(data.message)
@@ -70,6 +78,8 @@ export const Login = () => {
         'Server error';
 
       toast.error(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -146,9 +156,11 @@ export const Login = () => {
             Forgot Password?
           </p>
 
-          <button className="w-full py-2.5 rounded-full bg-gradient-to-r
-          from-indigo-500 to-indigo-900 text-white font-medium">
-            {state}
+          <button 
+            disabled={loading}
+            className="w-full py-2.5 rounded-full bg-gradient-to-r
+          from-indigo-500 to-indigo-900 text-white font-medium disabled:opacity-50">
+            {loading ? 'Processing...' : state}
           </button>
         </form>
 
