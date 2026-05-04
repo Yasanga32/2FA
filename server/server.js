@@ -17,10 +17,10 @@ const allowedOrigins = process.env.CORS_ORIGIN
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (!origin || origin.includes('onrender.com') || origin.includes('localhost')) {
             callback(null, true);
         } else {
-            console.error(`❌ CORS BLOCKED: Origin "${origin}" not in allowed list:`, allowedOrigins);
+            console.error(`❌ CORS BLOCKED: Origin "${origin}" not in allowed list`);
             callback(new Error('Not allowed by CORS'));
         }
     },
