@@ -38,7 +38,7 @@ export const register = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
-        //Sending welcome Email
+        //Sending welcome Email in background
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: email,
@@ -46,12 +46,9 @@ export const register = async (req, res) => {
             text: `Hello ${name},\n\nWelcome to Lanka Auth! We're glad to have you on board. Your account has been created successfully.\n\nBest regards,\nLanka Auth Team`
         };
 
-        try {
-            await transporter.sendMail(mailOptions);
-        } catch (emailError) {
+        transporter.sendMail(mailOptions).catch(emailError => {
             console.error("❌ Failed to send welcome email:", emailError.message);
-            // We don't return here because the user is already saved in the DB
-        }
+        });
 
         return res.json({ success: true, message: "User registered successfully" });
 
@@ -154,8 +151,7 @@ export const sendVerifyOtp = async (req, res) => {
                 user.email
             )
         };
-
-        await transporter.sendMail(mailOptions);
+        transporter.sendMail(mailOptions).catch(err => console.error("OTP Email Error:", err));
 
         res.json({ success: true, message: "Verification OTP sent to your email" });
 
@@ -260,8 +256,7 @@ export const sendResetOtp = async (req, res) => {
                 user.email
             )
         };
-
-        await transporter.sendMail(mailOptions);
+        transporter.sendMail(mailOptions).catch(err => console.error("Reset OTP Email Error:", err));
 
         res.json({ success: true, message: "Verification OTP sent to your email" });
 
