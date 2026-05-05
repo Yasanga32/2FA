@@ -7,8 +7,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     password: {
         type: String,
@@ -19,6 +18,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['patient', 'admin'],
         default: 'patient'
+    },
+
+    appId: {
+        type: String,
+        required: true,
+        index: true
     },
 
     verifyOtp: {
@@ -43,6 +48,9 @@ const userSchema = new mongoose.Schema({
     }
 
 });
+
+// Compound index to ensure email is unique per appId
+userSchema.index({ email: 1, appId: 1 }, { unique: true });
 
 const userModel = mongoose.models.user || mongoose.model('user', userSchema);
 export default userModel;

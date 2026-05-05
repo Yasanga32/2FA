@@ -13,22 +13,28 @@ export const register = async (req, res) => {
     }
 
     try {
-        //Check if user already exists
-        const existingUser = await userModel.findOne({ email });
+        //Check if user already exists in this app
+        const appId = req.body.appId || process.env.APP_ID;
+        const existingUser = await userModel.findOne({ email, appId });
 
         if (existingUser) {
-            return res.json({ success: false, message: "User with this email already exists" });
+            return res.json({ success: false, message: "User already exists in this application" });
         }
 
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
         //creating a new user
-        const user = new userModel({ name, email, password: hashedPassword });
+        const user = new userModel({
+            name,
+            email,
+            password: hashedPassword,
+            appId
+        });
         await user.save();
 
-        // Generate JWT token for each new user created in mongodb
-        const token = jwt.sign({ id: user._id },
+        // Generate JWT token with appId
+        const token = jwt.sign({ id: user._id, appId: user.appId },
             process.env.JWT_SECRET, { expiresIn: '7d' });
 
         res.cookie('token', token, {
@@ -47,7 +53,7 @@ export const register = async (req, res) => {
         };
 
         transporter.sendMail(mailOptions).catch(emailError => {
-            console.error("❌ Failed to send welcome email:", emailError.message);
+            console.error("Failed to send welcome email:", emailError.message);
         });
 
         return res.json({ success: true, message: "User registered successfully" });
@@ -73,10 +79,11 @@ export const login = async (req, res) => {
     }
 
     try {
-        const user = await userModel.findOne({ email });
+        const appId = req.body.appId || process.env.APP_ID;
+        const user = await userModel.findOne({ email, appId });
 
         if (!user) {
-            return res.json({ success: false, message: "Invalid email" });
+            return res.json({ success: false, message: "Invalid email or appId" });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -85,7 +92,7 @@ export const login = async (req, res) => {
             return res.json({ success: false, message: "Invalidpassword" });
         }
 
-        const token = jwt.sign({ id: user._id },
+        const token = jwt.sign({ id: user._id, appId: user.appId },
             process.env.JWT_SECRET, { expiresIn: '7d' });
 
         res.cookie('token', token, {
@@ -231,7 +238,8 @@ export const sendResetOtp = async (req, res) => {
 
 
     try {
-        const user = await userModel.findOne({ email });
+        const appId = req.body.appId || process.env.APP_ID;
+        const user = await userModel.findOne({ email, appId });
 
         if (!user) {
             return res.json({ success: false, message: 'User not found' });
@@ -281,7 +289,8 @@ export const resetPassword = async (req, res) => {
     }
     try {
 
-        const user = await userModel.findOne({ email });
+        const appId = req.body.appId || process.env.APP_ID;
+        const user = await userModel.findOne({ email, appId });
         if (!user) {
             return res.json({ success: false, message: 'User not found' });
         }
