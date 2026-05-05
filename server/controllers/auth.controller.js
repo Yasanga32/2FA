@@ -33,8 +33,8 @@ export const register = async (req, res) => {
         });
         await user.save();
 
-        // Generate JWT token with appId
-        const token = jwt.sign({ id: user._id, appId: user.appId },
+        // Generate JWT token with appId and role
+        const token = jwt.sign({ id: user._id, appId: user.appId, role: user.role },
             process.env.JWT_SECRET, { expiresIn: '7d' });
 
         res.cookie('token', token, {
@@ -92,7 +92,7 @@ export const login = async (req, res) => {
             return res.json({ success: false, message: "Invalidpassword" });
         }
 
-        const token = jwt.sign({ id: user._id, appId: user.appId },
+        const token = jwt.sign({ id: user._id, appId: user.appId, role: user.role },
             process.env.JWT_SECRET, { expiresIn: '7d' });
 
         res.cookie('token', token, {
@@ -102,7 +102,16 @@ export const login = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
-        return res.json({ success: true, message: "Login successful" });
+        return res.json({
+            success: true,
+            message: "Login successful",
+            userData: {
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                isAccountVerified: user.isAccountVerified
+            }
+        });
 
     } catch (error) {
         return res.json({ success: false, message: error.message });
@@ -220,7 +229,11 @@ export const isAuthenticated = async (req, res) => {
 
 
     try {
-        return res.json({ success: true });
+        return res.json({
+            success: true,
+            role: req.user.role,
+            userId: req.user.id
+        });
 
     } catch (error) {
         res.json({ success: false, message: error.message });
