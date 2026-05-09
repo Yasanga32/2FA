@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
 
 });
 
-// Compound index to ensure email is unique per appId
+//Compound index to ensure email is unique per appId
 userSchema.index({ email: 1, appId: 1 }, { unique: true });
 
 const userModel = mongoose.models.user || mongoose.model('user', userSchema);

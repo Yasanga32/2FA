@@ -56,7 +56,16 @@ export const register = async (req, res) => {
             console.error("Failed to send welcome email:", emailError.message);
         });
 
-        return res.json({ success: true, message: "User registered successfully" });
+        return res.json({
+            success: true,
+            message: "User registered successfully",
+            userData: {
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                isAccountVerified: user.isAccountVerified
+            }
+        });
 
 
 
