@@ -16,11 +16,12 @@ services:
       - mongo
 
   frontend:
-    build: ./client
+    build:
+      context: ./client
+      args:
+        VITE_API_URL: http://localhost:5000/api
     ports:
       - "3000:5173"
-    environment:
-      - VITE_API_URL=http://localhost:5000/api
     depends_on:
       - backend
 
